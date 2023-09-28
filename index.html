@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>100 boxes</title>
+		<style>
+			body {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: space-around;
+			}
+
+			.box {
+				width: 100px;
+				height: 100px;
+				background-color: #ade6de;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				cursor: pointer;
+				margin: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<script>
+			const body = document.body;
+			const boxCount = 100;
+			const boxes = [];
+
+			// Create and append 100 div elements to the body
+			for (let i = 0; i < boxCount; i++) {
+				const div = document.createElement("div");
+				div.className = "box";
+				div.innerText = `box${i + 1}`;
+				div.dataset.originalIndex = i;
+				div.dataset.clicked = "false";
+				div.addEventListener("click", () => {
+					const clicked = div.dataset.clicked === "true";
+					if (!clicked) {
+						// Move the clicked box to the first position
+						body.insertBefore(div, body.firstElementChild);
+						div.dataset.clicked = "true";
+					} else {
+						// Return the box to its original position
+						const originalIndex = parseInt(div.dataset.originalIndex);
+						const sibling = document.querySelectorAll(".box")[originalIndex];
+						body.insertBefore(div, sibling.nextElementSibling);
+						div.dataset.clicked = "false";
+					}
+				});
+
+				boxes.push(div);
+				body.appendChild(div);
+			}
+		</script>
+	</body>
+</html>
